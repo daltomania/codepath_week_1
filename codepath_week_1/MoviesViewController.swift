@@ -70,8 +70,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let movie = movies![indexPath.row]
         let movieDetailsViewController = segue.destinationViewController as! MovieDetailsViewController
         movieDetailsViewController.movie = movie
-        
-        
     }
 
 }
