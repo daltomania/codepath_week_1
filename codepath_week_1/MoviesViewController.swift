@@ -13,12 +13,15 @@ import SwiftLoader // https://github.com/leoru/SwiftLoader
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var errorLable: UILabel!
+    @IBOutlet weak var errorView: UIView!
     
     var refreshControl: UIRefreshControl!
     var movies: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        errorView.hidden = true
         
         refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "onRefresh", forControlEvents: UIControlEvents.ValueChanged)
@@ -32,10 +35,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? NSDictionary
             if let json = json {
+                self.errorView.hidden = true
                 self.movies = json["movies"] as? [NSDictionary]
                 self.tableView.reloadData()
-                SwiftLoader.hide()
+            } else {
+                self.errorLable.text = "Dang. Network Error."
+                self.errorView.hidden = false
             }
+            SwiftLoader.hide()
         }
         
         tableView.dataSource = self
@@ -48,6 +55,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? NSDictionary
             if let json = json {
+                self.errorView.hidden = true
                 self.movies = json["movies"] as? [NSDictionary]
                 self.tableView.reloadData()
                 self.refreshControl?.endRefreshing()
