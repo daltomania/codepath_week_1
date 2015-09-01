@@ -28,7 +28,10 @@ class MovieDetailsViewController: UIViewController {
         
         let url = NSURL(string: imageUrl)!
         imageView.setImageWithURL(url)
-        titleLabel.text = movie["title"] as? String
+        
+        let title = movie["title"] as? String
+        self.navigationItem.title = title
+        titleLabel.text = title
         synopsisLabel.text = movie["synopsis"] as? String
     }
     
