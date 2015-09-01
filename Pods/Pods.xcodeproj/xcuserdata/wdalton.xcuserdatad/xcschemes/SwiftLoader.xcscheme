@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "9ABA77EAE186C3915DBCC145"
-               BuildableName = "Pods_codepath_week_1.framework"
-               BlueprintName = "Pods-codepath_week_1"
+               BlueprintIdentifier = "5777FD8A29560A6A3BCBC992"
+               BuildableName = "SwiftLoader.framework"
+               BlueprintName = "SwiftLoader"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
