@@ -29,9 +29,17 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             self.tableView.insertSubview(control, atIndex: 0)
         }
         
+        SwiftLoader.show(animated: true)
+        fetchMovies()
+        
+        tableView.dataSource = self
+        tableView.delegate = self
+    }
+    
+    
+    func fetchMovies() {
         let url = NSURL(string: "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json")!
         let request = NSURLRequest(URL: url)
-        SwiftLoader.show(animated: true)
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
             let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? NSDictionary
             if let json = json {
@@ -44,23 +52,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             }
             SwiftLoader.hide()
         }
-        
-        tableView.dataSource = self
-        tableView.delegate = self
     }
 
+    
     func onRefresh() {
-        let url = NSURL(string: "https://gist.githubusercontent.com/timothy1ee/d1778ca5b944ed974db0/raw/489d812c7ceeec0ac15ab77bf7c47849f2d1eb2b/gistfile1.json")!
-        let request = NSURLRequest(URL: url)
-        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) { (response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
-            let json = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: nil) as? NSDictionary
-            if let json = json {
-                self.errorView.hidden = true
-                self.movies = json["movies"] as? [NSDictionary]
-                self.tableView.reloadData()
-                self.refreshControl?.endRefreshing()
-            }
-        }
+        fetchMovies()
+        self.refreshControl?.endRefreshing()
     }
     
     
